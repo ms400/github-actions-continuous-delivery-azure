@@ -1,0 +1,37 @@
+name: Configure Azure environment
+
+on: 
+  pull_request:
+    types: [labeled]
+
+env:
+  PACKAGES_TOKEN: ${{secrets.PACKAGES_TOKEN}}
+  AZURE_RESOURCE_GROUP: cd-with-actions
+  AZURE_APP_PLAN: actions-ttt-deployment
+  AZURE_LOCATION: '"Central US"'
+  #################################################
+  ### USER PROVIDED VALUES ARE REQUIRED BELOW   ###
+  #################################################
+  #################################################
+  ### REPLACE USERNAME WITH GH USERNAME         ###
+  AZURE_WEBAPP_NAME: ms400-ttt-app
+  #################################################
+
+jobs:
+  setup-up-azure-resources:
+    runs-on: ubuntu-latest
+
+    if: contains(github.event.pull_request.labels.*.name, 'spin up environment')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+  destroy-azure-resources:
+    runs-on: ubuntu-latest
+
+    if: contains(github.event.pull_request.labels.*.name, 'destroy environment')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
